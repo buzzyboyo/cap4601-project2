@@ -1,3 +1,5 @@
+package org.example;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,7 +22,7 @@ public class User {
 
     public User(String name, int age) {
         this.username = name;
-        this.age = age;
+        //this.age = age;
     }
 
     public void loadUser(String name) {
