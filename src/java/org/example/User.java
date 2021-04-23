@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 public class User {
 
+    private final int RATING_MEDIAN = 5;
+
     private String username;
 
     /*
@@ -18,11 +20,13 @@ public class User {
     */
 
 
-    private HashMap<String, Integer> movieRatings;
+    private HashMap<String, Double> movieRatings;
 
-    public User(String name, int age) {
+    public User(String name) {
         this.username = name;
         //this.age = age;
+
+        movieRatings = new HashMap<>();
     }
 
     public void loadUser(String name) {
@@ -37,11 +41,58 @@ public class User {
         //TODO: Code user movie type preference
     }
 
-    public void addMovieRating(String movieName, int rating) {
-        //TODO: Code user movie rating input
+    public void addMovieRating(String movieName, double rating) {
+        if(rating < 0.0)
+            rating = 0.0;
+        else if(rating >= 10.0)
+            rating = 10.0;
+
+        movieRatings.put(movieName, rating);
     }
 
-    public int getMovieRating(String movieName) {
-        return 0;
+    public double getMovieRating(String movieName) {
+        if(!movieRatings.containsKey(movieName))
+            return RATING_MEDIAN;
+
+        return movieRatings.get(movieName);
     }
+
+    public String getMovie(int index) {
+        int i = 0;
+
+        if(index > movieRatings.size())
+            return "";
+
+        for(String name : movieRatings.keySet()) {
+            if(i == index)
+                return name;
+
+            i++;
+        }
+
+        return "";
+    }
+
+    public ArrayList<String> getMoviesByRating(int rating) {
+        ArrayList<String> matches = new ArrayList<>();
+
+        for(String name : movieRatings.keySet()) {
+            if(movieRatings.get(name) == rating)
+                matches.add(name);
+        }
+
+        return matches;
+    }
+
+    public int getAverageRating() {
+        int total = 0;
+
+        for(String name : movieRatings.keySet()) {
+            total += movieRatings.get(name);
+        }
+
+        return total / movieRatings.size();
+    }
+
+    public int numMoviesRated() { return movieRatings.size(); }
 }
