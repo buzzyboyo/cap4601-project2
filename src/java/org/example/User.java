@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class User {
 
-    private final int RATING_MEDIAN = 5;
+    private final double RATING_MEDIAN = 5;
 
     private String username;
 
@@ -50,11 +50,24 @@ public class User {
         movieRatings.put(movieName, rating);
     }
 
+    public String getName() {
+        return this.username;
+    }
+
     public double getMovieRating(String movieName) {
-        if(!movieRatings.containsKey(movieName))
-            return RATING_MEDIAN;
+        //if the rating does not exist, return the average
+        if(!movieRatings.containsKey(movieName)) {
+            return getAverageRating();
+        }
 
         return movieRatings.get(movieName);
+    }
+
+    public boolean hasSeenMovie(String movieName) {
+        if(!movieRatings.containsKey(movieName))
+            return false;
+
+        return true;
     }
 
     public String getMovie(int index) {
@@ -84,7 +97,7 @@ public class User {
         return matches;
     }
 
-    public int getAverageRating() {
+    public double getAverageRating() {
         int total = 0;
 
         for(String name : movieRatings.keySet()) {
